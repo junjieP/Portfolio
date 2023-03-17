@@ -6,4 +6,6 @@ Feel free to look around.
    
    Data Visualization(Power BI) / 数据可视化：https://github.com/junjieP/Portfolio/blob/main/Sales%20analysis%20in%2010%20Markets/shopping%20mall%20analysis.pdf
    
-   Data Cleaning & Exploration(SQL) / 数据清理：
+   Data Cleaning & Exploration(SQL) / 数据清理：https://github.com/junjieP/Portfolio/blob/main/Sales%20analysis%20in%2010%20Markets/customer%20shopping.sql
+   
+   
