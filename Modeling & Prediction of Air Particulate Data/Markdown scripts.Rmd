@@ -1,0 +1,70 @@
+---
+author: "Junjie Peng"
+output: pdf_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+
+
+```{r,message=FALSE, warning=FALSE}
+library(astsa)
+data(part)
+plot(part, xlab="Year", ylab="Particulate Level", col="blue", main="Particulate Level of LA")
+
+acf1 = acf2(part,100)
+plot(acf1)
+
+diff1 = diff(part)
+plot(diff1, xlab="Year", ylab="Particulate Level", col="blue", main="Particulate Level of LA")
+acf2 = acf2(diff1,max.lag=40)
+plot(acf2)
+# first model ARIMA(0,1,1) or ARIMA(1,1,1)
+```
+
+```{r,message=FALSE, warning=FALSE}
+ARIMA1 = sarima(part, 0,1,1, details = TRUE)
+ARIMA1
+```
+
+```{r,message=FALSE, warning=FALSE}
+ARIMA2 = sarima(part, 1,1,1, details = TRUE)
+ARIMA2
+```
+
+
+```{r,message=FALSE, warning=FALSE}
+pred1 = sarima.for(part, 10, 1,1,1)
+upper <- pred1$pred + qnorm(0.95) * pred1$se
+lower <-pred1$pred - qnorm(0.95) * pred1$se
+(data.frame("Prediction" = pred1$pred,
+"PI 90% Lower Bound" = lower, "PI 90% Upper Bound" = upper))
+```
+```{r,message=FALSE, warning=FALSE}
+part.per = mvspec(part, log="no")
+P1 = part.per$details[order(part.per$details[,3], decreasing="TRUE"),]
+P1[1,1];P1[2,1];P1[3,1]
+1/P1[1,1];1/P1[2,1];1/P1[3,1]
+
+part.u1 = 2*P1[1,3]/qchisq(0.1,2)
+part.u2 = 2*P1[2,3]/qchisq(0.1,2)
+part.u3 = 2*P1[3,3]/qchisq(0.1,2)
+part.l1 = 2*P1[1,3]/qchisq(0.9,2)
+part.l2 = 2*P1[2,3]/qchisq(0.9,2)
+part.l3 = 2*P1[3,3]/qchisq(0.9,2)
+
+result = data.frame(DF=c(P1[1,1],P1[2,1],P1[3,1]),Spec=c(P1[1,3],P1[2,3],P1[3,3]), Upper=c(part.u1, part.u2, part.u3), Lower=c(part.l1, part.l2,part.l3) )
+result
+```
+```{r}
+
+```
+
+$$\delta X_t = X_t - X_{t-1}$$
+
+
+
+
+
